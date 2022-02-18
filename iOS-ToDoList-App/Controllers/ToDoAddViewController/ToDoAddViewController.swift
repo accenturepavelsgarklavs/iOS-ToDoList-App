@@ -22,6 +22,12 @@ class ToDoAddViewController: UIViewController {
         setupDescriptionTextField()
         setupAddButtonToCollectionView()
     }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        titleTextField.text = ""
+        descriptionTextView.text = ""
+    }
 }
 
 private extension ToDoAddViewController {

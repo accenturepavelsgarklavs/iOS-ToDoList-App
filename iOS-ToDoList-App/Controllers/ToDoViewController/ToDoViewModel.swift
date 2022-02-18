@@ -11,6 +11,6 @@ class ToDoViewModel {
 
     let taskManager = TaskManager.shared
 
-    var onOpen: ((String?) -> Void)?
+    var onOpen: ((String?, String?, Int?) -> Void)?
     var onAddTap: (() -> Void)?
 }

@@ -13,11 +13,11 @@ final class ToDoViewCell: UICollectionViewCell {
 
     let toDoTitle = UILabel()
     let toDoDescription = UILabel()
-    private let deadLineLabel = UILabel()
     private let checkBoxButton = UIButton()
     private let editButton = UIButton()
     private let trashButton = UIButton()
     private let buttonConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .bold, scale: .large)
+    var index: Int?
 
     let toDoViewCellModel = ToDoViewCellModel()
 
@@ -51,7 +51,10 @@ final class ToDoViewCell: UICollectionViewCell {
 
 private extension ToDoViewCell {
     @objc func didTapEditButton() {
-        toDoViewCellModel.onEditButtonTap?(toDoTitle.text)
+        guard let index = index else {
+            return
+        }
+        toDoViewCellModel.onEditButtonTap?(toDoTitle.text, toDoDescription.text, index)
     }
 
     @objc func didTapCheckBoxButton() {

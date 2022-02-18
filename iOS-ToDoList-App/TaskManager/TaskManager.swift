@@ -9,32 +9,33 @@ import Foundation
 
 class TaskManager {
 
+    struct Model: Codable {
+        var title: String?
+        var description: String?
+    }
+
     private init() {
     }
 
     static var shared = TaskManager()
-    var title: [String] = []
-    var description: [String] = []
+    var model: [Model] = []
 
-    func addTitle(value: String) {
-        title.append(value)
+    func updateValue(index: Int, value: Model) {
+        model[index] = value
     }
 
-    func getTitle(index: Int) -> String {
-        guard title.count > index else {
-            return ""
+    func getValue(index: Int) -> Model {
+        guard model.count > index else {
+            return .init(title: "", description: "")
         }
-        return title[index]
+        return model[index]
     }
 
-    func addDescription(value: String) {
-        description.append(value)
+    func addValue(value: Model) {
+        model.append(value)
     }
 
-    func getDescription(index: Int) -> String {
-        guard description.count > index else {
-            return ""
-        }
-        return description[index]
+    func removeValue(index: Int) {
+        model.remove(at: index)
     }
 }

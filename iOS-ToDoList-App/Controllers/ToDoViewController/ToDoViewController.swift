@@ -12,7 +12,6 @@ final class ToDoViewController: UIViewController {
 
     private var toDoCollectionView: UICollectionView?
     private let layout = UICollectionViewFlowLayout()
-    private let toDoAddViewController = ToDoAddViewController()
     let toDoViewModel = ToDoViewModel()
 
 
@@ -42,7 +41,7 @@ private extension ToDoViewController {
         toDoCollectionView.snp.makeConstraints { make in
             make.top.equalTo(view).offset(30)
             make.bottom.equalToSuperview()
-            make.trailing.leading.equalToSuperview()
+            make.right.left.equalTo(view.safeAreaLayoutGuide)
         }
     }
 }
@@ -65,7 +64,7 @@ private extension ToDoViewController {
 
     func setupLayout() {
         layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: view.bounds.size.width - 50, height: 250)
+        layout.itemSize = CGSize(width: 220, height: 300)
         toDoCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
     }
 }
@@ -75,17 +74,21 @@ extension ToDoViewController: UICollectionViewDelegate {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ToDoViewCell.cellId, for: indexPath) as? ToDoViewCell else {
             return .init()
         }
-        cell.toDoTitle.text = toDoViewModel.taskManager.getTitle(index: indexPath.row)
-        cell.toDoDescription.text = toDoViewModel.taskManager.getDescription(index: indexPath.row)
+
+        cell.index = indexPath.row
+
+        let modelValue = toDoViewModel.taskManager.getValue(index: indexPath.row)
+        cell.toDoTitle.text = modelValue.title
+        cell.toDoDescription.text = modelValue.description
         cell.toDoViewCellModel.onEditButtonTap = toDoViewModel.onOpen
 
         cell.toDoViewCellModel.onTrashButtonTap = { [weak self] in
             guard let self = self else {
                 return
             }
-            self.toDoViewModel.taskManager.title.remove(at: indexPath.row)
-            self.toDoViewModel.taskManager.description.remove(at: indexPath.row)
+            self.toDoViewModel.taskManager.removeValue(index: indexPath.row)
             collectionView.deleteItems(at: [indexPath])
+            self.updateCollectionView()
         }
         return cell
     }
@@ -93,6 +96,13 @@ extension ToDoViewController: UICollectionViewDelegate {
 
 extension ToDoViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        toDoViewModel.taskManager.title.count
+        let count = toDoViewModel.taskManager.model.count
+
+        // Making sure does not throw an error OutOfBoundsException because of deletion last cell
+        if count == -1 {
+            return 0
+        }
+
+        return count
     }
 }

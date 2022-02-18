@@ -9,7 +9,6 @@ import Foundation
 
 class ToDoViewCellModel {
 
-    var onEditButtonTap: ((String?) -> Void)?
+    var onEditButtonTap: ((String?, String?, Int?) -> Void)?
     var onTrashButtonTap: (() -> Void)?
-
 }
