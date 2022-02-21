@@ -11,14 +11,11 @@ import SnapKit
 final class ToDoViewController: UIViewController {
 
     private var toDoCollectionView: UICollectionView?
-    private let layout = UICollectionViewFlowLayout()
     let toDoViewModel = ToDoViewModel()
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setupLayout()
         setupNavigationBar()
         setupCollection()
     }
@@ -29,30 +26,30 @@ final class ToDoViewController: UIViewController {
 }
 
 private extension ToDoViewController {
-    func setupCollection() {
-        guard let toDoCollectionView = toDoCollectionView else {
-            return
-        }
-        toDoCollectionView.register(ToDoViewCell.self, forCellWithReuseIdentifier: ToDoViewCell.cellId)
-        toDoCollectionView.dataSource = self
-        toDoCollectionView.delegate = self
-        view.addSubview(toDoCollectionView)
-
-        toDoCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(view).offset(30)
-            make.bottom.equalToSuperview()
-            make.right.left.equalTo(view.safeAreaLayoutGuide)
-        }
-    }
-}
-
-private extension ToDoViewController {
-    @objc func dismissSelf() {
-        dismiss(animated: true, completion: nil)
-    }
-
     @objc func addTapped() {
         toDoViewModel.onAddTap?()
+    }
+
+    func setupCollection() {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.itemSize = CGSize(width: 220, height: 300)
+//        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        toDoCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+
+        if let toDoCollectionView = toDoCollectionView {
+            toDoCollectionView.translatesAutoresizingMaskIntoConstraints = false
+            toDoCollectionView.register(ToDoViewCell.self, forCellWithReuseIdentifier: ToDoViewCell.reuseIdentifier)
+            toDoCollectionView.dataSource = self
+            toDoCollectionView.delegate = self
+            view.addSubview(toDoCollectionView)
+
+            toDoCollectionView.snp.makeConstraints { make in
+                make.top.equalTo(view).offset(30)
+                make.bottom.equalToSuperview()
+                make.right.left.equalTo(view.safeAreaLayoutGuide)
+            }
+        }
     }
 
     func setupNavigationBar() {
@@ -61,25 +58,19 @@ private extension ToDoViewController {
         addButton.tintColor = UIColor(named: "tigerOrange")
         navigationItem.rightBarButtonItem = addButton
     }
-
-    func setupLayout() {
-        layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: 220, height: 300)
-        toDoCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-    }
 }
 
 extension ToDoViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ToDoViewCell.cellId, for: indexPath) as? ToDoViewCell else {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ToDoViewCell.reuseIdentifier, for: indexPath) as? ToDoViewCell else {
             return .init()
         }
 
         cell.index = indexPath.row
 
         let modelValue = toDoViewModel.taskManager.getValue(index: indexPath.row)
-        cell.toDoTitle.text = modelValue.title
-        cell.toDoDescription.text = modelValue.description
+        cell.toDoTitle.text = modelValue?.title
+        cell.toDoDescription.text = modelValue?.description
         cell.toDoViewCellModel.onEditButtonTap = toDoViewModel.onOpen
 
         cell.toDoViewCellModel.onTrashButtonTap = { [weak self] in
@@ -87,8 +78,7 @@ extension ToDoViewController: UICollectionViewDelegate {
                 return
             }
             self.toDoViewModel.taskManager.removeValue(index: indexPath.row)
-            collectionView.deleteItems(at: [indexPath])
-            self.updateCollectionView()
+            collectionView.reloadData()
         }
         return cell
     }
@@ -97,12 +87,13 @@ extension ToDoViewController: UICollectionViewDelegate {
 extension ToDoViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         let count = toDoViewModel.taskManager.model.count
-
-        // Making sure does not throw an error OutOfBoundsException because of deletion last cell
-        if count == -1 {
-            return 0
-        }
-
         return count
     }
 }
+
+//extension ToDoViewController: UICollectionViewDelegateFlowLayout {
+//
+//    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        return .init(width: 220, height: 300)
+//    }
+//}

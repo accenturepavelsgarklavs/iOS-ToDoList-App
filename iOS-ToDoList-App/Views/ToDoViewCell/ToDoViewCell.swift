@@ -9,14 +9,19 @@ import UIKit
 
 final class ToDoViewCell: UICollectionViewCell {
 
-    static let cellId = "ToDoViewCell"
+    struct Constants {
+        static let insetValue = 20
+        static let offsetValue = 20
+    }
 
-    let toDoTitle = UILabel()
-    let toDoDescription = UILabel()
+    static let reuseIdentifier = "ToDoViewCell"
+
     private let checkBoxButton = UIButton()
     private let editButton = UIButton()
     private let trashButton = UIButton()
     private let buttonConfig = UIImage.SymbolConfiguration(pointSize: 24, weight: .bold, scale: .large)
+    let toDoTitle = UILabel()
+    let toDoDescription = UILabel()
     var index: Int?
 
     let toDoViewCellModel = ToDoViewCellModel()
@@ -36,7 +41,6 @@ final class ToDoViewCell: UICollectionViewCell {
     }
 
     private func setupCell() {
-        contentView.backgroundColor = UIColor(red: 252 / 255.0, green: 226 / 255.0, blue: 196 / 255.0, alpha: 1.0)
         contentView.clipsToBounds = true
         contentView.backgroundColor = UIColor(named: "dairyCream")
         contentView.layer.cornerRadius = 20
@@ -51,16 +55,13 @@ final class ToDoViewCell: UICollectionViewCell {
 
 private extension ToDoViewCell {
     @objc func didTapEditButton() {
-        guard let index = index else {
-            return
-        }
         toDoViewCellModel.onEditButtonTap?(toDoTitle.text, toDoDescription.text, index)
     }
 
     @objc func didTapCheckBoxButton() {
         if checkBoxButton.tintColor == .red {
             checkBoxButton.tintColor = UIColor(named: "forestGreen")
-        } else if checkBoxButton.tintColor == UIColor(named: "forestGreen") {
+        } else {
             checkBoxButton.tintColor = .red
         }
     }
@@ -76,7 +77,7 @@ private extension ToDoViewCell {
         checkBoxButton.tintColor = .red
 
         checkBoxButton.snp.makeConstraints { make in
-            make.bottom.left.equalToSuperview().inset(20)
+            make.bottom.left.equalToSuperview().inset(Constants.insetValue)
         }
         checkBoxButton.addTarget(self, action: #selector(didTapCheckBoxButton), for: .touchUpInside)
     }
@@ -89,7 +90,7 @@ private extension ToDoViewCell {
 
         editButton.snp.makeConstraints { make in
             make.leading.equalTo(checkBoxButton.snp.trailing)
-            make.bottom.equalToSuperview().inset(20)
+            make.bottom.equalToSuperview().inset(Constants.insetValue)
         }
         editButton.addTarget(self, action: #selector(didTapEditButton), for: .touchUpInside)
     }
@@ -101,8 +102,8 @@ private extension ToDoViewCell {
         trashButton.tintColor = .gray
 
         trashButton.snp.makeConstraints { make in
-            make.right.equalToSuperview().inset(20)
-            make.bottom.equalToSuperview().inset(20)
+            make.right.equalToSuperview().inset(Constants.insetValue)
+            make.bottom.equalToSuperview().inset(Constants.insetValue)
         }
         trashButton.addTarget(self, action: #selector(didTapTrashButton), for: .touchUpInside)
     }
@@ -116,19 +117,20 @@ private extension ToDoViewCell {
 
         toDoTitle.snp.makeConstraints { make in
             make.centerX.equalTo(self)
-            make.top.equalToSuperview().offset(20)
+            make.top.equalToSuperview().offset(Constants.offsetValue)
         }
     }
 
     func setupToDoDescription() {
         contentView.addSubview(toDoDescription)
         toDoDescription.numberOfLines = 0
+        toDoDescription.lineBreakMode = .byWordWrapping
         toDoDescription.font = toDoDescription.font.withSize(16)
         toDoDescription.textColor = .black
 
         toDoDescription.snp.makeConstraints { make in
             make.centerX.equalTo(self)
-            make.top.equalTo(toDoTitle.snp.bottom).offset(20)
+            make.top.equalTo(toDoTitle.snp.bottom).offset(Constants.offsetValue)
             make.left.equalToSuperview().offset(30)
         }
     }
