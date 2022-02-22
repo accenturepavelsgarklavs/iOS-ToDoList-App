@@ -20,6 +20,7 @@
 		1BE79C8427BE3ABA00DED55C /* ToDoViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE79C8327BE3ABA00DED55C /* ToDoViewCell.swift */; };
 		1BE79C8627BE3ADB00DED55C /* ToDoVieweCellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1BE79C8527BE3ADB00DED55C /* ToDoVieweCellModel.swift */; };
 		75070EAA6CC7C86A0636F60E /* Pods_iOS_ToDoList_App.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 082CA85066B1F401FC14987D /* Pods_iOS_ToDoList_App.framework */; };
+		AFBCAA333126C5F5C529029F /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFBCA95D3E47AD396045E897 /* BaseViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		1BE79C8327BE3ABA00DED55C /* ToDoViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoViewCell.swift; sourceTree = "<group>"; };
 		1BE79C8527BE3ADB00DED55C /* ToDoVieweCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoVieweCellModel.swift; sourceTree = "<group>"; };
 		4AFCE24D059A752DED68E0DF /* Pods-iOS-ToDoList-App.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-iOS-ToDoList-App.debug.xcconfig"; path = "Target Support Files/Pods-iOS-ToDoList-App/Pods-iOS-ToDoList-App.debug.xcconfig"; sourceTree = "<group>"; };
+		AFBCA95D3E47AD396045E897 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -161,8 +163,17 @@
 				1BE79C7927BE3A0500DED55C /* ToDoViewController */,
 				1BE79C7427BE39BF00DED55C /* ToDoEditViewController */,
 				1BE79C7127BE396900DED55C /* ToDoAddViewController */,
+				AFBCAF513DF4072B448CCA18 /* BaseViewController */,
 			);
 			path = Controllers;
+			sourceTree = "<group>";
+		};
+		AFBCAF513DF4072B448CCA18 /* BaseViewController */ = {
+			isa = PBXGroup;
+			children = (
+				AFBCA95D3E47AD396045E897 /* BaseViewController.swift */,
+			);
+			path = BaseViewController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -289,6 +300,7 @@
 				1BE79C7D27BE3A4C00DED55C /* ToDoViewModel.swift in Sources */,
 				1BE79C3E27BE31FB00DED55C /* AppDelegate.swift in Sources */,
 				1BE79C8427BE3ABA00DED55C /* ToDoViewCell.swift in Sources */,
+				AFBCAA333126C5F5C529029F /* BaseViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -7,15 +7,14 @@
 
 import Foundation
 
-class TaskManager {
+final class TaskManager {
 
-    struct Model: Codable {
+    struct Model {
         var title: String?
         var description: String?
     }
 
-    private init() {
-    }
+    private init() {}
 
     static var shared = TaskManager()
     var model: [Model] = []
@@ -24,10 +23,8 @@ class TaskManager {
         model[index] = value
     }
 
-    func getValue(index: Int) -> Model {
-        guard model.count > index else {
-            return .init(title: "", description: "")
-        }
+    func getValue(index: Int) -> Model? {
+        guard model.count > index else { return nil }
         return model[index]
     }
 

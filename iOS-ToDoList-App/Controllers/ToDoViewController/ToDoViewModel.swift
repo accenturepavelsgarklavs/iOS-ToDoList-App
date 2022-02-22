@@ -7,8 +7,7 @@
 
 import Foundation
 
-class ToDoViewModel {
-
+final class ToDoViewModel {
     let taskManager = TaskManager.shared
 
     var onOpen: ((String?, String?, Int?) -> Void)?

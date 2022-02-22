@@ -7,8 +7,7 @@
 
 import Foundation
 
-class ToDoEditViewModel {
-
+final class ToDoEditViewModel {
     var onFinish: (() -> Void)?
     var taskManager = TaskManager.shared
 
